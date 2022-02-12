@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+    <PackageReference Include="QuickFix.Net" Version="1.8.0" />
+    <PackageReference Include="QuickFIXn.FIX4.2" Version="1.10.0" />
   </ItemGroup>
 
 </Project>
