@@ -1,6 +1,18 @@
 using Executor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = builder.Environment;
+var logger = LoggerFactory.Create(config =>
+{
+    if (!env.IsDevelopment() && System.Console.IsInputRedirected)
+        config.AddJsonConsole();
+    else
+        config.AddConsole();
+}).CreateLogger(nameof(Program));
+
+logger.LogInformation("Starting {ExecutingAssemblyName} ({EnvironmentName})", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, env.EnvironmentName);
+
+builder.Host.UseFixGatewayShell();
 
 // Additional configuration is required to successfully run gRPC on macOS.
 // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
