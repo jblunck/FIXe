@@ -12,6 +12,7 @@ var logger = LoggerFactory.Create(config =>
 
 logger.LogInformation("Starting {ExecutingAssemblyName} ({EnvironmentName})", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, env.EnvironmentName);
 
+builder.Services.AddFixGatewayShell();
 builder.Host.UseFixGatewayShell();
 
 // Additional configuration is required to successfully run gRPC on macOS.
@@ -21,6 +22,8 @@ builder.Host.UseFixGatewayShell();
 builder.Services.AddGrpc();
 
 var app = builder.Build();
+
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<GreeterService>();

@@ -1,8 +1,21 @@
 using Azure.Identity;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 
 public static class FixGatewayExtensions
 {
+    public static IServiceCollection AddFixGatewayShell(this IServiceCollection services)
+    {
+        services.AddOpenTelemetryMetrics(options =>
+        {
+            options
+                .AddAspNetCoreInstrumentation()
+                .AddPrometheusExporter();
+        });
+        return services;
+    }
+
     public static IHostBuilder UseFixGatewayShell(this IHostBuilder builder)
     {
         builder.ConfigureAppConfiguration((hostingContext, config) =>
