@@ -3,7 +3,7 @@ using QuickFix.Fields;
 
 namespace Executor.FIX;
 
-public class Executor : QuickFix.MessageCracker, QuickFix.IApplication
+public class Executor : MessageCracker
 {
     static readonly decimal DEFAULT_MARKET_PRICE = 10;
 
@@ -13,29 +13,9 @@ public class Executor : QuickFix.MessageCracker, QuickFix.IApplication
     private string GenOrderID() { return (++orderID).ToString(); }
     private string GenExecID() { return (++execID).ToString(); }
 
-    #region QuickFix.Application Methods
-
-    public void FromApp(Message message, SessionID sessionID)
-    {
-        Console.WriteLine("IN:  " + message);
-        Crack(message, sessionID);
-    }
-
-    public void ToApp(Message message, SessionID sessionID)
-    {
-        Console.WriteLine("OUT: " + message);
-    }
-
-    public void FromAdmin(Message message, SessionID sessionID) { }
-    public void OnCreate(SessionID sessionID) { }
-    public void OnLogout(SessionID sessionID) { }
-    public void OnLogon(SessionID sessionID) { }
-    public void ToAdmin(Message message, SessionID sessionID) { }
-    #endregion
-
     #region MessageCracker overloads
 
-    public void OnMessage(QuickFix.FIX42.NewOrderSingle n, SessionID s)
+    public void OnMessage(QuickFix.FIX44.NewOrderSingle n, SessionID s)
     {
         Symbol symbol = n.Symbol;
         Side side = n.Side;
@@ -55,10 +35,12 @@ public class Executor : QuickFix.MessageCracker, QuickFix.IApplication
             default: throw new IncorrectTagValue(ordType.Tag);
         }
 
-        QuickFix.FIX42.ExecutionReport exReport = new QuickFix.FIX42.ExecutionReport(
+// (OrderID aOrderID, ExecID aExecID, ExecType aExecType, OrdStatus aOrdStatus, Symbol aSymbol, Side aSide, LeavesQty aLeavesQty, CumQty aCumQty, AvgPx aAvgPx)
+        QuickFix.FIX44.ExecutionReport exReport = new
+        (
             new OrderID(GenOrderID()),
             new ExecID(GenExecID()),
-            new ExecTransType(ExecTransType.NEW),
+            // new ExecTransType(ExecTransType.NEW),
             new ExecType(ExecType.FILL),
             new OrdStatus(OrdStatus.FILLED),
             symbol,
@@ -69,7 +51,7 @@ public class Executor : QuickFix.MessageCracker, QuickFix.IApplication
 
         exReport.Set(clOrdID);
         exReport.Set(orderQty);
-        exReport.Set(new LastShares(orderQty.getValue()));
+        exReport.Set(new LastQty(orderQty.getValue()));
         exReport.Set(new LastPx(price.getValue()));
 
         if (n.IsSetAccount())

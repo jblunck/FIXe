@@ -1,4 +1,5 @@
 using Azure.Identity;
+using Executor.Services;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
@@ -7,6 +8,7 @@ public static class FixGatewayExtensions
 {
     public static IServiceCollection AddFixGatewayShell(this IServiceCollection services)
     {
+        services.AddHostedService<FIXAcceptorService>();
         services.AddOpenTelemetryMetrics(options =>
         {
             options
