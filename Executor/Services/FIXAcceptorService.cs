@@ -37,7 +37,7 @@ public class FIXAcceptorService : IHostedService, IDisposable
     {
         _logger.LogInformation("FIX Acceptor is stopping.");
 
-        _acceptor.Stop();
+        _acceptor.Stop(true);
         return Task.CompletedTask;
     }
 
