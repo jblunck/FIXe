@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using QuickFix;
+using QuickFix.Fields;
 
 namespace Executor.FIX;
 
@@ -35,12 +36,47 @@ public class Acceptor : IApplication, IApplicationExt
     {
     }
 
+    private readonly ConcurrentDictionary<SessionID,DateTime> _sessionLogonDateTimes = new();
+    private void SetSessionLogonTime(SessionID sessionID, DateTime dateTime)
+    {
+        var session = Session.LookupSession(sessionID) ?? throw new RejectLogon("inconsistent state of the world");
+        if (!_sessionLogonDateTimes.ContainsKey(sessionID) || session.IsNewSession)
+        {
+            _sessionLogonDateTimes.AddOrUpdate(sessionID, dateTime, (_, _) =>
+            {
+                session.Log.Clear();
+                return dateTime;
+            });
+
+            if (session.Log is Logger.FileLog log)
+            {
+                log.SetSessionLogon(dateTime);
+            }
+        }
+    }
+
     // messages we receive after successful verification
     // messages that are rejected and generate a reject are interceptable in ToAdmin()
     public void FromAdmin(Message message, SessionID sessionID)
     {
         // check the PASSWD and throw new RejectLogon("bad password");
         Console.WriteLine("IN(admin): " + message.ToString().Replace(Message.SOH, '|'));
+
+        var msgType = message.Header.GetString(Tags.MsgType);
+        switch (msgType)
+        {
+            case MsgType.LOGON:
+            {
+                // check the PASSWD and throw new RejectLogon("bad password");
+                if (message.IsSetField(Tags.RawData))
+                {
+                    var password = message.GetString(Tags.RawData);
+                    Console.WriteLine("Password is: " + password);
+                }
+                SetSessionLogonTime(sessionID, message.Header.GetDateTime(Tags.SendingTime));
+                break;
+            }
+        }
     }
 
     public void FromApp(Message message, SessionID sessionID)

@@ -22,7 +22,7 @@ public class Executor : MessageCracker
         OrdType ordType = n.OrdType;
         OrderQty orderQty = n.OrderQty;
         ClOrdID clOrdID = n.ClOrdID;
-        Price price = new Price(DEFAULT_MARKET_PRICE);
+        Price price = new (DEFAULT_MARKET_PRICE);
 
         switch (ordType.getValue())
         {

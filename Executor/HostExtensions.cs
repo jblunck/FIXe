@@ -1,6 +1,7 @@
 using Azure.Identity;
 using Executor.Services;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using NLog.Extensions.Logging;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
@@ -68,6 +69,8 @@ public static class FixGatewayExtensions
             {
                 builder.AddConsole();
             }
+
+            builder.AddNLog();
         });
 
         return builder;
