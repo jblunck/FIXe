@@ -20,4 +20,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Executor\Executor.csproj" />
+    <ProjectReference Include="..\Executor.Domain\Executor.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

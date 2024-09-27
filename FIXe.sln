@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Executor", "Executor\Execut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecutorTests", "ExecutorTests\ExecutorTests.csproj", "{F00BC996-E7EA-4072-AC7A-1F5B81A5C953}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Executor.Domain", "Executor.Domain\Executor.Domain.csproj", "{28D46637-334B-4B0B-8D40-2DBF911F7D69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Executor.Infrastructure", "Executor.Infrastructure\Executor.Infrastructure.csproj", "{498D030B-2551-479D-90E2-94BB3741DF3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{F00BC996-E7EA-4072-AC7A-1F5B81A5C953}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F00BC996-E7EA-4072-AC7A-1F5B81A5C953}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F00BC996-E7EA-4072-AC7A-1F5B81A5C953}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28D46637-334B-4B0B-8D40-2DBF911F7D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28D46637-334B-4B0B-8D40-2DBF911F7D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28D46637-334B-4B0B-8D40-2DBF911F7D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28D46637-334B-4B0B-8D40-2DBF911F7D69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{498D030B-2551-479D-90E2-94BB3741DF3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{498D030B-2551-479D-90E2-94BB3741DF3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{498D030B-2551-479D-90E2-94BB3741DF3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{498D030B-2551-479D-90E2-94BB3741DF3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

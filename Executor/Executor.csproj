@@ -25,4 +25,9 @@
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Executor.Domain\Executor.Domain.csproj" />
+    <ProjectReference Include="..\Executor.Infrastructure\Executor.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
