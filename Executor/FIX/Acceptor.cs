@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using Executor.Domain;
 using QuickFix;
 using QuickFix.Fields;
 
@@ -6,11 +7,17 @@ namespace Executor.FIX;
 
 public class Acceptor : IApplication, IApplicationExt
 {
+    private readonly IOrderProcessorService _orderProcessor;
+    public Acceptor(IOrderProcessorService orderProcessor)
+    {
+        _orderProcessor = orderProcessor;
+    }
+
     private readonly ConcurrentDictionary<SessionID, MessageCracker> _messageCrackers = new();
 
     public void OnCreate(SessionID sessionID)
     {
-        var cracker = new Executor();
+        var cracker = new Executor(sessionID, _orderProcessor);
         if (!_messageCrackers.TryAdd(sessionID, cracker))
             throw new ApplicationException("Failed to add MessageCracker");
     }
@@ -37,6 +44,7 @@ public class Acceptor : IApplication, IApplicationExt
     }
 
     private readonly ConcurrentDictionary<SessionID,DateTime> _sessionLogonDateTimes = new();
+
     private void SetSessionLogonTime(SessionID sessionID, DateTime dateTime)
     {
         var session = Session.LookupSession(sessionID) ?? throw new RejectLogon("inconsistent state of the world");

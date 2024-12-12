@@ -13,5 +13,5 @@ public class Order
     public Guid Instrument { get; init; }
     public Side Side { get; init; }
     public uint OrderQty { get; init; }
-    public ulong Price { get; init; }
+    public decimal Price { get; init; }
 }

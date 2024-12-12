@@ -1,3 +1,5 @@
+using Executor.Domain;
+using Executor.Infrastructure;
 using Executor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,9 @@ var logger = LoggerFactory.Create(config =>
 
 logger.LogInformation("Starting {ExecutingAssemblyName} ({EnvironmentName})", System.Reflection.Assembly.GetExecutingAssembly().GetName().Name, env.EnvironmentName);
 
+builder.Services.AddSingleton<IOrderRepository, MemoryOrderRepository>();
+builder.Services.AddHostedService<PortOrderProcessor>();
+builder.Services.AddSingleton<IOrderProcessorService>((sp) => sp.GetRequiredService<PortOrderProcessor>());
 builder.Services.AddFixGatewayShell();
 builder.Host.UseFixGatewayShell();
 

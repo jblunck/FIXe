@@ -1,3 +1,4 @@
+using Executor.Domain;
 using QuickFix;
 using QuickFix.Logger;
 using QuickFix.Store;
@@ -15,10 +16,10 @@ public class FIXAcceptorService : IHostedService, IDisposable
 
     private readonly ILogger<FIXAcceptorService> _logger;
 
-    public FIXAcceptorService(ILogger<FIXAcceptorService> logger, IConfiguration configuration)
+    public FIXAcceptorService(ILogger<FIXAcceptorService> logger, IConfiguration configuration, IOrderProcessorService orderProcessor)
     {
         _logger = logger;
-        _application = new FIX.Acceptor();
+        _application = new FIX.Acceptor(orderProcessor);
         _settings =  new SessionSettings("quickfix.cfg");
         _storeFactory   = new FileStoreFactory(_settings);
         _logFactory = new Executor.FIX.Logger.FileLogFactory();
